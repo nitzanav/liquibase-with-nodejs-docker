@@ -6,6 +6,13 @@ RUN apt-get update \
     && apt-get -y install gnupg wget unzip \
     && rm -rf /var/lib/apt/lists/*
 
+#Add node.js/npm as part of this docker image
+#The goal is to enable defining `executeCommand` of `liquibase`.
+RUN    apt-get install -y curl \
+    && curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs \
+    && curl -L https://www.npmjs.com/install.sh | sh
+
 # Add the liquibase user and step in the directory
 RUN addgroup --gid 1001 liquibase
 RUN adduser --disabled-password --uid 1001 --ingroup liquibase liquibase
